@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include<commdlg.h>
 #define ADD_TASK 1006007
 #define resetB 404
 #define savefile 707
@@ -557,52 +558,77 @@ void file_read(HWND hWnd){
 }
 void save_file(HWND hWnd){
     OPENFILENAME ofn;
-    HANDLE hFile;
-    DWORD dwBytesWritten;
-    char buffer[1024];
-
+    //HANDLE hfile;
+    char file_name[100];
     ZeroMemory(&ofn, sizeof(ofn));
-    ofn.lStructSize = sizeof(ofn);
-    ofn.lpstrFilter = "Text Files (*.txt)\0*.txt\0All Files (*.*)\0*.*\0";
-    ofn.lpstrFile = malloc(MAX_PATH);
+    ofn.lStructSize = sizeof(OPENFILENAME);
+    ofn.hwndOwner = hWnd;
+    ofn.lpstrFile = file_name;
     ofn.lpstrFile[0] = '\0';
-    ofn.nMaxFile = MAX_PATH;
-    ofn.Flags = OFN_EXPLORER | OFN_OVERWRITEPROMPT;
+    ofn.nMaxFile = 100;
+    ofn.lpstrFilter = "Text Files (*.txt)\0*.txt\0\0";
+    ofn.nFilterIndex = 1;
+    GetSaveFileName(&ofn);
+    write_file(ofn.lpstrFile);
 
-    // Get text from seven static controls and append to buffer
-    GetDlgItemText(hWnd, hStatic1, buffer, sizeof(buffer));
-    strcat(buffer, "\n"); // add newline between control text
-    GetDlgItemText(hWnd, hStatic2, buffer + strlen(buffer), sizeof(buffer) - strlen(buffer));
-    strcat(buffer, "\n");
-    GetDlgItemText(hWnd, hStatic3, buffer + strlen(buffer), sizeof(buffer) - strlen(buffer));
-    strcat(buffer, "\n");
-    GetDlgItemText(hWnd, hStatic4, buffer + strlen(buffer), sizeof(buffer) - strlen(buffer));
-    strcat(buffer, "\n");
-    GetDlgItemText(hWnd, hStatic5, buffer + strlen(buffer), sizeof(buffer) - strlen(buffer));
-    strcat(buffer, "\n");
-    GetDlgItemText(hWnd, hStatic6, buffer + strlen(buffer), sizeof(buffer) - strlen(buffer));
-    strcat(buffer, "\n");
-    GetDlgItemText(hWnd, hStatic7, buffer + strlen(buffer), sizeof(buffer) - strlen(buffer));
 
-    if (GetSaveFileName(&ofn)) {
-        hFile = CreateFile(ofn.lpstrFile, GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
-        if (hFile == INVALID_HANDLE_VALUE) {
-            printf("Error: Unable to create file!\n");
-            return;
-        }
-
-        if (!WriteFile(hFile, buffer, strlen(buffer), &dwBytesWritten, NULL)) {
-            printf("Error: Unable to write to file!\n");
-            CloseHandle(hFile);
-            return;
-        }
-
-        CloseHandle(hFile);
-
-        printf("Data saved to file: %s\n", ofn.lpstrFile);
-    }
-
-    free(ofn.lpstrFile);
- }
+}
+void write_file(char *path){
+    FILE *file;
+    file = fopen(path,"w");
+    int _size = GetWindowTextLength(hStatic1);
+    int _sizeTm = GetWindowTextLength(hStatic11);
+    char *data = (char*) malloc(_size + 1);
+    char *dataTm = (char*) malloc(_sizeTm + 1);
+    GetWindowText(hStatic1,data,_size+1);
+    GetWindowText(hStatic11,dataTm,_sizeTm+1);
+    fwrite(data,_size+1,1,file);
+    fwrite(dataTm,_sizeTm+1,1,file);
+    fputc('\n', file);
+    _size = GetWindowTextLength(hStatic2);
+    data = (char*) malloc(_size + 1);
+    GetWindowText(hStatic2,data,_size+1);
+    GetWindowText(hStatic12,dataTm,_sizeTm+1);
+    fwrite(data,_size+1,1,file);
+    fwrite(dataTm,_sizeTm+1,1,file);
+    fputc('\n', file);
+    _size = GetWindowTextLength(hStatic3);
+    data = (char*) malloc(_size + 1);
+    GetWindowText(hStatic3,data,_size+1);
+    GetWindowText(hStatic13,dataTm,_sizeTm+1);
+    fwrite(data,_size+1,1,file);
+    fwrite(dataTm,_sizeTm+1,1,file);
+    fputc('\n', file);
+    _size = GetWindowTextLength(hStatic4);
+    data = (char*) malloc(_size + 1);
+    GetWindowText(hStatic4,data,_size+1);
+    GetWindowText(hStatic14,dataTm,_sizeTm+1);
+    fwrite(data,_size+1,1,file);
+    fwrite(dataTm,_sizeTm+1,1,file);
+    fputc('\n', file);
+    _size = GetWindowTextLength(hStatic5);
+    data = (char*) malloc(_size + 1);
+    GetWindowText(hStatic5,data,_size+1);
+    GetWindowText(hStatic15,dataTm,_sizeTm+1);
+    fwrite(data,_size+1,1,file);
+    fwrite(dataTm,_sizeTm+1,1,file);
+    fputc('\n', file);
+    _size = GetWindowTextLength(hStatic6);
+    data = (char*) malloc(_size + 1);
+    GetWindowText(hStatic6,data,_size+1);
+    GetWindowText(hStatic16,dataTm,_sizeTm+1);
+    fwrite(data,_size+1,1,file);
+    fwrite(dataTm,_sizeTm+1,1,file);
+    fputc('\n', file);
+    _size = GetWindowTextLength(hStatic7);
+    data = (char*) malloc(_size + 1);
+    GetWindowText(hStatic7,data,_size+1);
+    GetWindowText(hStatic17,dataTm,_sizeTm+1);
+    fwrite(data,_size+1,1,file);
+    fwrite(dataTm,_sizeTm+1,1,file);
+    fputc('\n', file);
+    fclose(file);
+    free(data);
+}
 
 
