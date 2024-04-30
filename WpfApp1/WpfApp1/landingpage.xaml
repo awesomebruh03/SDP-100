@@ -1,0 +1,26 @@
+<Window x:Class="YourNamespace.LandingPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Chorono Task" Height="350" Width="500">
+    <Border Padding="10">
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <!-- Projects Panel -->
+            <StackPanel Grid.Column="0" Background="Gray" Width="200" >
+                <TextBlock Text="Projects" Foreground="White" Padding="10"/>
+                <Button Margin="0 250 0 0" Content="ADD PROJECT" Width="123"/>
+            </StackPanel>
+
+            <!-- Inbox Panel -->
+            <StackPanel Grid.Column="1">
+                <TextBlock Text="INBOX" Padding="10" FontSize="16"/>
+                <!-- Tasks will be added here -->
+                <Button Content="ADD TASK" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0 240 0 0"/>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>
